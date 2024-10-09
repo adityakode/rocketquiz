@@ -1,0 +1,113 @@
+[
+    {
+      "id": 1,
+      "image": "img1.jpg",
+      "questionText": "What is the primary fighter jet of the Indian Air Force?",
+      "answerOptions": [
+        { "answerText": "MiG-21", "isCorrect": false },
+        { "answerText": "Sukhoi Su-30MKI", "isCorrect": true },
+        { "answerText": "Rafale", "isCorrect": false },
+        { "answerText": "Tejas", "isCorrect": false }
+      ]
+    },
+    {
+      "id": 2,
+      "image": "img2.jpg",
+      "questionText": "In which year was the Indian Air Force established?",
+      "answerOptions": [
+        { "answerText": "1947", "isCorrect": false },
+        { "answerText": "1932", "isCorrect": true },
+        { "answerText": "1950", "isCorrect": false },
+        { "answerText": "1965", "isCorrect": false }
+      ]
+    },
+    {
+      "id": 3,
+      "image": "img3.jpg",
+      "questionText": "What is the motto of the Indian Air Force?",
+      "answerOptions": [
+        { "answerText": "Touch the sky with glory", "isCorrect": true },
+        { "answerText": "Service before self", "isCorrect": false },
+        { "answerText": "Victory through air", "isCorrect": false },
+        { "answerText": "Glory to the skies", "isCorrect": false }
+      ]
+    },
+    {
+      "id": 4,
+      "image": "img4.jpg",
+      "questionText": "Which aircraft was recently inducted into the Indian Air Force in 2020?",
+      "answerOptions": [
+        { "answerText": "MiG-29", "isCorrect": false },
+        { "answerText": "Dassault Rafale", "isCorrect": true },
+        { "answerText": "Jaguar", "isCorrect": false },
+        { "answerText": "Mirage 2000", "isCorrect": false }
+      ]
+    },
+    {
+      "id": 5,
+      "image": "img5.jpg",
+      "questionText": "Which is the largest transport aircraft in the Indian Air Force?",
+      "answerOptions": [
+        { "answerText": "Il-76", "isCorrect": false },
+        { "answerText": "C-130J Super Hercules", "isCorrect": false },
+        { "answerText": "C-17 Globemaster III", "isCorrect": true },
+        { "answerText": "Antonov An-32", "isCorrect": false }
+      ]
+    },
+    {
+      "id": 6,
+      "image": "img6.gif",
+      "questionText": "Which helicopter is known as the 'Apache Guardian' in the Indian Air Force?",
+      "answerOptions": [
+        { "answerText": "HAL Dhruv", "isCorrect": false },
+        { "answerText": "Mi-17 V5", "isCorrect": false },
+        { "answerText": "AH-64E Apache", "isCorrect": true },
+        { "answerText": "Chinook", "isCorrect": false }
+      ]
+    },
+    {
+      "id": 7,
+      "image": "img7.jpeg",
+      "questionText": "Who was the first Indian Chief of the Air Staff?",
+      "answerOptions": [
+        { "answerText": "Subroto Mukerjee", "isCorrect": true },
+        { "answerText": "Arjan Singh", "isCorrect": false },
+        { "answerText": "Norman Browne", "isCorrect": false },
+        { "answerText": "Anil Tipnis", "isCorrect": false }
+      ]
+    },
+    {
+      "id": 8,
+      "image": "img8.jpg",
+      "questionText": "Which of these is a surface-to-air missile used by the Indian Air Force?",
+      "answerOptions": [
+        { "answerText": "Astra", "isCorrect": false },
+        { "answerText": "Akash", "isCorrect": true },
+        { "answerText": "BrahMos", "isCorrect": false },
+        { "answerText": "Nirbhay", "isCorrect": false }
+      ]
+    },
+    {
+      "id": 9,
+      "image": "img9.jpg",
+      "questionText": "The S-400 Triumf air defense system is being procured by India from which country?",
+      "answerOptions": [
+        { "answerText": "United States", "isCorrect": false },
+        { "answerText": "Russia", "isCorrect": true },
+        { "answerText": "France", "isCorrect": false },
+        { "answerText": "Israel", "isCorrect": false }
+      ]
+    },
+    {
+      "id": 10,
+      "image": "img10.jpg",
+      "questionText": "The headquarters of the Indian Air Force is located in which city?",
+      "answerOptions": [
+        { "answerText": "Mumbai", "isCorrect": false },
+        { "answerText": "New Delhi", "isCorrect": true },
+        { "answerText": "Chennai", "isCorrect": false },
+        { "answerText": "Bangalore", "isCorrect": false }
+      ]
+    }
+  ]
+  
