@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title> 🚀RQuiz</title>
+  <!-- TailwindCSS CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    /* Custom styles for the header button */
+    .header-button {
+      background-color: #4A5568; /* Dark gray */
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+      display: inline-flex;
+      align-items: center;
+      margin-bottom: 1rem; /* Space below the button */
+      position: absolute; /* Position absolute for top left corner */
+      top: 1rem; /* Distance from top */
+      left: 1rem; /* Distance from left */
+    }
+
+    .header-button:hover {
+      background-color: #2D3748; /* Darker gray on hover */
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-center min-h-screen relative">
+
+  <div class="container mx-auto p-5 flex flex-col items-center">
+    <!-- Header with name (logo) -->
+    <a href="#" class="header-button">
+       🚀RocketQuiz  <!-- Replace with your name and emoji -->
+    </a>
+
+    <div class="flex flex-col bg-white shadow-md rounded-lg overflow-hidden" style="width: 850px;">
+      <div class="flex">
+        <!-- Left: Image Section -->
+        <div class="w-1/2 p-4">
+          <img id="question-image" src="images/img1.jpg" alt="Question Image" class="w-full h-full object-contain rounded-lg" style="max-height: 500px;">
+        </div>
+
+        <!-- Right: Question and Options Section -->
+        <div class="w-1/2 p-4">
+          <!-- Question Card -->
+          <div class="bg-gray-100 p-4 rounded-lg shadow-sm mb-4">
+            <h2 id="question-text" class="text-xl font-semibold text-gray-800 mb-2">Question will appear here</h2>
+          </div>
+
+          <!-- Options -->
+          <div id="options-container" class="flex flex-col space-y-2">
+            <!-- Option buttons will be appended here dynamically -->
+          </div>
+
+          <!-- Submit Button and Finish Button -->
+          <div class="mt-4 flex justify-between">
+            <button id="submit-btn" class="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors">
+              Submit
+            </button>
+            <button id="finish-btn" class="bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700 transition-colors" onclick="finishQuiz()">
+              Finish
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Navigation Buttons -->
+      <div class="flex justify-between p-4 bg-gray-100">
+        <button id="prev-btn" class="bg-gray-400 text-white py-2 px-4 rounded-lg hover:bg-green-500 transition-colors" disabled>
+          Previous
+        </button>
+        <button id="next-btn" class="bg-gray-400 text-white py-2 px-4 rounded-lg hover:bg-green-500 transition-colors">
+          Next
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Script to manage the quiz -->
+  <script src="js/app.js"></script>
+  <script>
+    // Function to select 5 random questions from the existing questions
+    function getRandomQuestions() {
+      // Assuming you have a way to fetch your questions (e.g., from a JSON file)
+      const totalQuestions = 10; // total questions you have
+      const randomQuestions = [];
+
+      while (randomQuestions.length < 5) {
+        const randomId = Math.floor(Math.random() * totalQuestions) + 1; // IDs from 1 to 10
+        if (!randomQuestions.includes(randomId)) {
+          randomQuestions.push(randomId);
+        }
+      }
+
+      // Now use the randomQuestions array to get the questions
+      // You can now retrieve and display questions based on these IDs
+      console.log(randomQuestions); // This is just for demonstration
+      // Implement logic to update the UI with the questions from the randomIds
+    }
+
+    // Function to handle finish button click
+    function finishQuiz() {
+      window.location.href = "score.html"; // Redirect to the score page
+    }
+
+    // Call the function to get random questions on page load
+    window.onload = getRandomQuestions;
+  </script>
+</body>
+</html>

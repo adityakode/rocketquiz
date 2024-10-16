@@ -1,80 +1,126 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title> 🚀RQuiz</title>
-  <!-- TailwindCSS CDN -->
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-  <style>
-    /* Custom styles for the header button */
-    .header-button {
-      background-color: #4A5568; /* Dark gray */
-      color: white;
-      padding: 0.5rem 1rem;
-      border-radius: 0.5rem;
-      display: inline-flex;
-      align-items: center;
-      margin-bottom: 1rem; /* Space below the button */
-      position: absolute; /* Position absolute for top left corner */
-      top: 1rem; /* Distance from top */
-      left: 1rem; /* Distance from left */
-    }
-
-    .header-button:hover {
-      background-color: #2D3748; /* Darker gray on hover */
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rocket Quiz - Home</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        /* Leaderboard sliding menu style */
+        #leaderboard {
+            position: fixed;
+            top: 0;
+            left: -100%; /* Start off-screen */
+            width: 300px;
+            height: 100%;
+            background-color: white;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
+            transition: left 0.3s ease-in-out;
+            z-index: 10;
+        }
+        #leaderboard.open {
+            left: 0; /* Slide in */
+        }
+    </style>
 </head>
-<body class="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-center min-h-screen relative">
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+    <div class="container mx-auto px-4">
+        <h1 class="text-4xl font-bold text-center mb-8">Rocket Quiz</h1>
 
-  <div class="container mx-auto p-5 flex flex-col items-center">
-    <!-- Header with name (logo) -->
-    <a href="#" class="header-button">
-       🚀RocketQuiz  <!-- Replace with your name and emoji -->
-    </a>
+        <!-- Leaderboard Button (Top Left) -->
+        <button id="leaderboardBtn" class="absolute top-4 left-4 bg-blue-500 text-white px-4 py-2 rounded">
+            Leaderboard
+        </button>
 
-    <div class="flex flex-col bg-white shadow-md rounded-lg overflow-hidden" style="width: 850px;">
-      <div class="flex">
-        <!-- Left: Image Section -->
-        <div class="w-1/2 p-4">
-          <img id="question-image" src="images/img1.jpg" alt="Question Image" class="w-full h-full object-contain rounded-lg" style="max-height: 500px;">
-        </div>
-
-        <!-- Right: Question and Options Section -->
-        <div class="w-1/2 p-4">
-          <!-- Question Card -->
-          <div class="bg-gray-100 p-4 rounded-lg shadow-sm mb-4">
-            <h2 id="question-text" class="text-xl font-semibold text-gray-800 mb-2">Question will appear here</h2>
-          </div>
-
-          <!-- Options -->
-          <div id="options-container" class="flex flex-col space-y-2">
-            <!-- Option buttons will be appended here dynamically -->
-          </div>
-
-          <!-- Submit Button -->
-          <div class="mt-4">
-            <button id="submit-btn" class="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors">
-              Submit
+        <!-- Leaderboard Sliding Menu -->
+        <div id="leaderboard" class="bg-white shadow-lg p-4">
+            <h2 class="text-xl font-semibold">Leaderboard</h2>
+            <div id="leaderboardContent" class="mt-2">
+                <!-- Leaderboard data will be displayed here -->
+                <p>Player 1 - 1500 points</p>
+                <p>Player 2 - 1400 points</p>
+                <p>Player 3 - 1300 points</p>
+            </div>
+            <button id="hideLeaderboard" class="mt-4 bg-red-500 text-white px-4 py-2 rounded">
+                &lt; Hide
             </button>
-          </div>
         </div>
-      </div>
 
-      <!-- Navigation Buttons -->
-      <div class="flex justify-between p-4 bg-gray-100">
-        <button id="prev-btn" class="bg-gray-400 text-white py-2 px-4 rounded-lg hover:bg-green-500 transition-colors" disabled>
-          Previous
-        </button>
-        <button id="next-btn" class="bg-gray-400 text-white py-2 px-4 rounded-lg hover:bg-green-500 transition-colors">
-          Next
-        </button>
-      </div>
+        <!-- Avatar Selection and Name Input -->
+        <div class="flex flex-col items-center">
+            <div class="relative w-full max-w-xs">
+                <button id="avatarDropdown" class="bg-gray-200 border rounded w-full flex items-center justify-between p-2">
+                    <img id="selectedAvatarImg" src="https://rocketquizbucket.s3.eu-north-1.amazonaws.com/space_cats.jpg" alt="Space Cats" class="w-12 h-12 inline-block mr-2">
+                    <span id="selectedAvatar">Space Cats</span>
+                    <span>&#9662;</span> <!-- Dropdown arrow -->
+                </button>
+                <div id="avatarOptions" class="absolute left-0 z-10 w-full bg-white border mt-1 rounded hidden">
+                    <div class="p-2 cursor-pointer flex items-center" data-avatar="Space Cats" data-img="https://rocketquizbucket.s3.eu-north-1.amazonaws.com/space_cats.jpg">
+                        <img src="https://rocketquizbucket.s3.eu-north-1.amazonaws.com/space_cats.jpg" alt="Space Cats" class="w-12 h-12 inline-block mr-2"> Space Cats
+                    </div>
+                    <div class="p-2 cursor-pointer flex items-center" data-avatar="Rusty Racoon" data-img="https://rocketquizbucket.s3.eu-north-1.amazonaws.com/rusty_racoon.jpg">
+                        <img src="https://rocketquizbucket.s3.eu-north-1.amazonaws.com/rusty_racoon.jpg" alt="Rusty Racoon" class="w-12 h-12 inline-block mr-2"> Rusty Racoon
+                    </div>
+                    <div class="p-2 cursor-pointer flex items-center" data-avatar="Ninja Shepherd" data-img="https://rocketquizbucket.s3.eu-north-1.amazonaws.com/ninja_shepherd.jpg">
+                        <img src="https://rocketquizbucket.s3.eu-north-1.amazonaws.com/ninja_shepherd.jpg" alt="Ninja Shepherd" class="w-12 h-12 inline-block mr-2"> Ninja Shepherd
+                    </div>
+                    <div class="p-2 cursor-pointer flex items-center" data-avatar="Cyber Monkey" data-img="https://rocketquizbucket.s3.eu-north-1.amazonaws.com/cyber_monkey.jpg">
+                        <img src="https://rocketquizbucket.s3.eu-north-1.amazonaws.com/cyber_monkey.jpg" alt="Cyber Monkey" class="w-12 h-12 inline-block mr-2"> Cyber Monkey
+                    </div>
+                    <div class="p-2 cursor-pointer flex items-center" data-avatar="Funky Giraffe" data-img="https://rocketquizbucket.s3.eu-north-1.amazonaws.com/funky_giraffe.jpg">
+                        <img src="https://rocketquizbucket.s3.eu-north-1.amazonaws.com/funky_giraffe.jpg" alt="Funky Giraffe" class="w-12 h-12 inline-block mr-2"> Funky Giraffe
+                    </div>
+                </div>
+            </div>
+
+            <input type="text" id="userName" placeholder="Enter your name" class="mt-4 p-2 border rounded w-full max-w-xs" required>
+            <button id="startQuiz" class="mt-4 bg-green-500 text-white px-4 py-2 rounded">
+                Start
+            </button>
+        </div>
     </div>
-  </div>
 
-  <!-- Script to manage the quiz -->
-  <script src="js/app.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Toggle leaderboard sliding menu
+            $('#leaderboardBtn').click(function() {
+                $('#leaderboard').toggleClass('open');
+            });
+
+            // Hide leaderboard
+            $('#hideLeaderboard').click(function() {
+                $('#leaderboard').removeClass('open');
+            });
+
+            // Toggle avatar dropdown
+            $('#avatarDropdown').click(function() {
+                $('#avatarOptions').toggle();
+            });
+
+            // Select avatar
+            $('#avatarOptions .p-2').click(function() {
+                const avatarName = $(this).data('avatar');
+                const avatarImg = $(this).data('img');
+                $('#selectedAvatar').text(avatarName);
+                $('#selectedAvatarImg').attr('src', avatarImg);
+                $('#avatarOptions').hide();
+            });
+
+            // Start quiz button action
+            $('#startQuiz').click(function() {
+                const selectedAvatar = $('#selectedAvatar').text();
+                const userName = $('#userName').val();
+
+                if (selectedAvatar === "Select Avatar" || userName === "") {
+                    alert("Please select an avatar and enter your name.");
+                    return;
+                }
+
+                // Redirect to the quiz page and pass the name and avatar as query parameters
+                window.location.href = `quiz.html?username=${encodeURIComponent(userName)}&avatar=${encodeURIComponent(selectedAvatar)}`;
+            });
+        });
+    </script>
 </body>
 </html>
