@@ -7,53 +7,74 @@
   <!-- TailwindCSS CDN -->
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <style>
-    /* Custom styles for the header button */
     .header-button {
-      background-color: #4A5568; /* Dark gray */
+      background-color: #4A5568; 
       color: white;
       padding: 0.5rem 1rem;
       border-radius: 0.5rem;
       display: inline-flex;
       align-items: center;
-      margin-bottom: 1rem; /* Space below the button */
-      position: absolute; /* Position absolute for top left corner */
-      top: 1rem; /* Distance from top */
-      left: 1rem; /* Distance from left */
+      margin-bottom: 1rem; 
+      position: absolute; 
+      top: 1rem; 
+      left: 1rem; 
     }
-
     .header-button:hover {
-      background-color: #2D3748; /* Darker gray on hover */
+      background-color: #2D3748; 
+    }
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 10;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.4);
+      padding-top: 60px; 
+    }
+    .modal-content {
+      background-color: #fefefe;
+      margin: 5% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%;
+      max-width: 500px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+    }
+    .close:hover,
+    .close:focus {
+      color: black;
+      text-decoration: none;
+      cursor: pointer;
     }
   </style>
 </head>
 <body class="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-center min-h-screen relative">
 
   <div class="container mx-auto p-5 flex flex-col items-center">
-    <!-- Header with name (logo) -->
-    <a href="#" class="header-button">
-       🚀RocketQuiz  <!-- Replace with your name and emoji -->
+    <a href="index.html" class="header-button">
+       🚀RocketQuiz
     </a>
 
     <div class="flex flex-col bg-white shadow-md rounded-lg overflow-hidden" style="width: 850px;">
       <div class="flex">
-        <!-- Left: Image Section -->
         <div class="w-1/2 p-4">
           <img id="question-image" src="images/img1.jpg" alt="Question Image" class="w-full h-full object-contain rounded-lg" style="max-height: 500px;">
         </div>
-
-        <!-- Right: Question and Options Section -->
         <div class="w-1/2 p-4">
-          <!-- Question Card -->
           <div class="bg-gray-100 p-4 rounded-lg shadow-sm mb-4">
             <h2 id="question-text" class="text-xl font-semibold text-gray-800 mb-2">Question will appear here</h2>
           </div>
-
-          <!-- Options -->
-          <div id="options-container" class="flex flex-col space-y-2">
-            <!-- Option buttons will be appended here dynamically -->
-          </div>
-
-          <!-- Submit Button and Finish Button -->
+          <div id="options-container" class="flex flex-col space-y-2"></div>
           <div class="mt-4 flex justify-between">
             <button id="submit-btn" class="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors">
               Submit
@@ -64,8 +85,6 @@
           </div>
         </div>
       </div>
-
-      <!-- Navigation Buttons -->
       <div class="flex justify-between p-4 bg-gray-100">
         <button id="prev-btn" class="bg-gray-400 text-white py-2 px-4 rounded-lg hover:bg-green-500 transition-colors" disabled>
           Previous
@@ -77,35 +96,85 @@
     </div>
   </div>
 
-  <!-- Script to manage the quiz -->
+  <div id="scoreModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <h2 class="text-center text-xl font-bold">Quiz Completed!</h2>
+      <div class="flex items-center justify-center mt-4">
+        <img id="user-avatar" src="images/default-avatar.png" alt="Avatar" class="w-24 h-24 rounded-full border-2 border-indigo-600">
+      </div>
+      <p class="text-center text-lg mt-2" id="final-score">Your Score: 0/5</p>
+      <p class="text-center text-lg mt-2" id="username">Username: <span class="font-bold">User123</span></p>
+      <div class="flex justify-center mt-4">
+        <button class="bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition-colors" onclick="submitScore()">
+          Submit Score
+        </button>
+        <button class="bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700 transition-colors" onclick="closeModal()">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+
   <script src="js/app.js"></script>
   <script>
-    // Function to select 5 random questions from the existing questions
-    function getRandomQuestions() {
-      // Assuming you have a way to fetch your questions (e.g., from a JSON file)
-      const totalQuestions = 10; // total questions you have
-      const randomQuestions = [];
+    // Extract username and avatar from the URL query parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const userName = urlParams.get('username') || "User123"; // Default if not provided
+    const avatarName = urlParams.get('avatar') || "Space Cats"; // Default if not provided
 
-      while (randomQuestions.length < 5) {
-        const randomId = Math.floor(Math.random() * totalQuestions) + 1; // IDs from 1 to 10
-        if (!randomQuestions.includes(randomId)) {
-          randomQuestions.push(randomId);
-        }
-      }
+    // Avatar images map
+    const avatarImages = {
+      "Space Cats": "https://rocketquizbucket.s3.eu-north-1.amazonaws.com/space_cats.jpg",
+      "Rusty Racoon": "https://rocketquizbucket.s3.eu-north-1.amazonaws.com/rusty_racoon.jpg",
+      "Ninja Shepherd": "https://rocketquizbucket.s3.eu-north-1.amazonaws.com/ninja_shepherd.jpg",
+      "Cyber Monkey": "https://rocketquizbucket.s3.eu-north-1.amazonaws.com/cyber_monkey.jpg",
+      "Funky Giraffe": "https://rocketquizbucket.s3.eu-north-1.amazonaws.com/funky_giraffe.jpg"
+    };
 
-      // Now use the randomQuestions array to get the questions
-      // You can now retrieve and display questions based on these IDs
-      console.log(randomQuestions); // This is just for demonstration
-      // Implement logic to update the UI with the questions from the randomIds
-    }
+    // Set user avatar and name in the modal
+    document.getElementById('username').innerText = `Username: ${userName}`;
+    document.getElementById('user-avatar').src = avatarImages[avatarName] || "images/default-avatar.png";
 
     // Function to handle finish button click
     function finishQuiz() {
-      window.location.href = "score.html"; // Redirect to the score page
+      document.getElementById('final-score').innerText = `Your Score: ${score}/${questions.length}`;
+      document.getElementById('scoreModal').style.display = 'block';
+      console.log(`Final Score: ${score}/${questions.length}`);
     }
 
-    // Call the function to get random questions on page load
-    window.onload = getRandomQuestions;
+    // Function to submit the score to RDS
+    function submitScore() {
+      const finalScore = score; // Assuming `score` is a global variable in your app
+      const avatarUrl = avatarImages[avatarName];
+
+      fetch('http://65.1.148.207:3000/api/submit-score', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username: userName,
+          avatar: avatarUrl,
+          score: finalScore
+        })
+      })
+      .then(response => {
+        if (!response.ok) throw new Error('Network response was not ok');
+        return response.text();
+      })
+      .then(data => {
+        console.log(data);
+        alert('Score submitted successfully!');
+        closeModal(); // Close the modal after submission
+      })
+      .catch(error => console.error('Error submitting score:', error));
+    }
+
+    // Close modal function
+    function closeModal() {
+      document.getElementById('scoreModal').style.display = 'none';
+    }
   </script>
 </body>
 </html>

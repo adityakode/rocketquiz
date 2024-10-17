@@ -1,14 +1,21 @@
 let currentQuestionIndex = 0;
 let selectedOption = null;
 let questions = [];
+let score = 0; // Initialize score
 
 // Fetch questions from JSON file
 fetch('questions.json')
   .then(response => response.json())
   .then(data => {
-    questions = data;
+    getRandomQuestions(data); // Ensure random questions are set
     displayQuestion();
   });
+
+// Function to select random questions
+function getRandomQuestions(allQuestions) {
+  const shuffledQuestions = allQuestions.sort(() => 0.5 - Math.random());
+  questions = shuffledQuestions.slice(0, 5); // Select 5 random questions
+}
 
 // Display current question
 function displayQuestion() {
@@ -62,6 +69,10 @@ document.getElementById('submit-btn').addEventListener('click', () => {
       btn.classList.add('bg-red-300', 'text-white');
     }
   });
+
+  if (selectedOption === correctOptionIndex) {
+    score++; // Increase score if correct answer is selected
+  }
 });
 
 // Handle next and previous buttons

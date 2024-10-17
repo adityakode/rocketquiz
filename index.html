@@ -38,9 +38,7 @@
             <h2 class="text-xl font-semibold">Leaderboard</h2>
             <div id="leaderboardContent" class="mt-2">
                 <!-- Leaderboard data will be displayed here -->
-                <p>Player 1 - 1500 points</p>
-                <p>Player 2 - 1400 points</p>
-                <p>Player 3 - 1300 points</p>
+                <p>Loading...</p>
             </div>
             <button id="hideLeaderboard" class="mt-4 bg-red-500 text-white px-4 py-2 rounded">
                 &lt; Hide
@@ -86,6 +84,9 @@
             // Toggle leaderboard sliding menu
             $('#leaderboardBtn').click(function() {
                 $('#leaderboard').toggleClass('open');
+                if ($('#leaderboard').hasClass('open')) {
+                    fetchLeaderboard();
+                }
             });
 
             // Hide leaderboard
@@ -121,6 +122,30 @@
                 window.location.href = `quiz.html?username=${encodeURIComponent(userName)}&avatar=${encodeURIComponent(selectedAvatar)}`;
             });
         });
+
+        // Function to fetch leaderboard data from the backend
+        function fetchLeaderboard() {
+            fetch('http://65.1.148.207:3000/api/leaderboard')
+                .then(response => {
+                    if (!response.ok) throw new Error('Network response was not ok');
+                    return response.json();
+                })
+                .then(data => {
+                    const leaderboardContent = $('#leaderboardContent');
+                    leaderboardContent.empty(); // Clear previous content
+                    if (data.length === 0) {
+                        leaderboardContent.append('<p>No scores available.</p>');
+                    } else {
+                        data.forEach(entry => {
+                            leaderboardContent.append(`<p>${entry.username} - ${entry.score} points</p>`);
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching leaderboard:', error);
+                    $('#leaderboardContent').html('<p>Error loading leaderboard.</p>');
+                });
+        }
     </script>
 </body>
 </html>
